@@ -1,0 +1,30 @@
+title: Brute Force Login Attempt
+id: bf001-sigma
+status: production
+description: >
+  Qısa müddət ərzində eyni hesab üçün çoxsaylı uğursuz giriş cəhdi aşkar edir.
+  Bu, credential stuffing və ya brute force hücumuna işarə edə bilər.
+author: Blue Team - MILLISEC
+date: 2026-04-30
+tags:
+  - attack.credential_access
+  - attack.t1110
+logsource:
+  product: windows
+  service: security
+detection:
+  selection:
+    EventID: 4625
+    SubStatus|contains:
+      - "0xC000006A"    # Yanlış şifrə
+      - "0xC0000064"    # İstifadəçi mövcud deyil
+  timeframe: 5m
+  condition: selection | count() > 10
+fields:
+  - TargetUserName
+  - SourceIp
+  - WorkstationName
+falsepositives:
+  - İstifadəçinin şifrəsini unutması
+  - Test sistemi
+level: high
