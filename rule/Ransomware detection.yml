@@ -1,0 +1,41 @@
+title: Ransomware Activity Detection
+id: rw001-sigma
+status: production
+description: >
+  Potensial ransomware fəaliyyətini aşkar edir. Çoxsaylı faylların
+  qısa müddətdə adının dəyişdirilməsi, xüsusilə məlum ransomware
+  uzantıları ilə, bu hücum tipinin əsas göstəricisidir.
+author: Blue Team - MILLISEC
+date: 2026-04-30
+tags:
+  - attack.impact
+  - attack.t1486
+logsource:
+  product: windows
+  category: file_event
+detection:
+  selection:
+    FileName|endswith:
+      - ".encrypted"
+      - ".locked"
+      - ".crypt"
+      - ".crypted"
+      - ".enc"
+      - ".WNCRY"
+      - ".locky"
+      - ".zepto"
+  shadow_delete:
+    CommandLine|contains:
+      - "vssadmin delete shadows"
+      - "wbadmin delete catalog"
+      - "bcdedit /set recoveryenabled no"
+  timeframe: 1m
+  condition: selection | count() > 20 or shadow_delete
+fields:
+  - FileName
+  - Image
+  - User
+falsepositives:
+  - Şifrələmə proqramları (VeraCrypt, BitLocker)
+  - Backup sistemləri
+level: critical
