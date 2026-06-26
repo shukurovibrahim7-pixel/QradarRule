@@ -23,6 +23,6 @@ jobs:
 
       - name: Deploy rules to QRadar
         env:
-          QRADAR_IP: ${{ secrets.QRADAR_IP }}
-          SEC_TOKEN: ${{ secrets.SEC_TOKEN }}
+          QRADAR_HOST: ${{ secrets.QRADAR_IP }}
+          QRADAR_SEC_TOKEN: ${{ secrets.SEC_TOKEN }}
         run: python scripts/deploy_rules.py
