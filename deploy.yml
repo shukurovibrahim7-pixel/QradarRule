@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
@@ -25,4 +25,8 @@ jobs:
         env:
           QRADAR_HOST: ${{ secrets.QRADAR_HOST }}
           QRADAR_SEC_TOKEN: ${{ secrets.QRADAR_SEC_TOKEN }}
+          QRADAR_IP: ${{ secrets.QRADAR_IP }}
+          QRADAR_API_KEY: ${{ secrets.QRADAR_API_KEY }}
+          QRADAR_URL: ${{ secrets.QRADAR_URL }}
+          SEC_TOKEN: ${{ secrets.SEC_TOKEN }}
         run: python scripts/deploy_rules.py
